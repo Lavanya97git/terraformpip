@@ -1,0 +1,59 @@
+name: keyvault testing
+variables:
+  - group: keyvaultterra
+stages:
+  - stage: terraform
+    jobs:
+      - job: terraformbuildjob
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - script: |
+              echo "Install Terraform v1.8.2 manually."
+              # Install Terraform v1.8.2 manually
+              sudo apt-get update && sudo apt-get install -y wget unzip
+              wget https://releases.hashicorp.com/terraform/1.8.2/terraform_1.8.2_linux_amd64.zip
+              unzip terraform_1.8.2_linux_amd64.zip
+              sudo mv terraform /usr/local/bin/
+              terraform -version
+            displayName: "Command Line Script"
+          - script: |
+              echo "terraform commands init"
+              terraform init
+            displayName: "Terraform init"
+            env:
+              TF_VAR_subscription_id: $(subscription-id)
+              TF_VAR_client_id: $(client-id)
+              TF_VAR_client_secret: $(client-secret)
+              TF_VAR_tenant_id: $(tenant-id)
+              TF_VAR_XYZ_subnet_id: $(XYZ-subnet-id) # added
+          - script: |
+              echo "sub = $TF_VAR_subscription_id"
+              echo "subnet = $TF_VAR_XYZ_subnet_id"
+            displayName: "Debug Secrets"
+            env:
+              TF_VAR_subscription_id: $(subscription-id)
+          - script: |
+              echo "I am going now terraform commands"
+              terraform plan -out=tfplan
+              terraform apply -auto-approve tfplan
+            displayName: "Terraform Plan & Apply"
+            env:
+              TF_VAR_subscription_id: $(subscription-id)
+              TF_VAR_client_id: $(client-id)
+              TF_VAR_client_secret: $(client-secret)
+              TF_VAR_tenant_id: $(tenant-id)
+              TF_VAR_XYZ_subnet_id: $(XYZ-subnet-id)
+          - script: |
+              echo "⚠️ WARNING: Terraform destroy will run in 60 seconds..."
+              sleep 60
+
+              echo "Starting Terraform Destroy..."
+              terraform destroy -auto-approve
+            displayName: "terraform destroy"
+            env:
+              TF_VAR_subscription_id: $(subscription-id)
+              TF_VAR_client_id: $(client-id)
+              TF_VAR_client_secret: $(client-secret)
+              TF_VAR_tenant_id: $(tenant-id)
+              TF_VAR_XYZ_subnet_id: $(XYZ-subnet-id)
