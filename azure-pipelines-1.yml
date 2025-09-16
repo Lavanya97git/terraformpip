@@ -38,10 +38,10 @@ stages:
               terraform apply -auto-approve tfplan
             displayName: "Terraform Plan & Apply"
             env:
-              TF_VAR_subscription_id: $(subscription-id)
-              TF_VAR_client_id: $(client-id)
-              TF_VAR_client_secret: $(client-secret)
-              TF_VAR_tenant_id: $(tenant-id)
+              # TF_VAR_subscription_id: $(subscription-id)
+              # TF_VAR_client_id: $(client-id)
+              # TF_VAR_client_secret: $(client-secret)
+              # TF_VAR_tenant_id: $(tenant-id)
 
           - script: |
               echo "⚠️ WARNING: Terraform destroy will run in 60 seconds..."
@@ -50,7 +50,7 @@ stages:
               terraform destroy -auto-approve
             displayName: "terraform destroy"
             env:
-              TF_VAR_subscription_id: $(subscription-id)
-              TF_VAR_client_id: $(client-id)
-              TF_VAR_client_secret: $(client-secret)
-              TF_VAR_tenant_id: $(tenant-id)
+              # TF_VAR_subscription_id: $(subscription-id)
+              # TF_VAR_client_id: $(client-id)
+              # TF_VAR_client_secret: $(client-secret)
+              # TF_VAR_tenant_id: $(tenant-id)
