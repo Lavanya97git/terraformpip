@@ -1,7 +1,11 @@
 name: keyvault testing
 variables:
   - group: keyvaultterra
-
+    env:
+      TF_VAR_subscription_id: $(subscription-id)
+      TF_VAR_client_id: $(client-id)
+      TF_VAR_client_secret: $(client-secret)
+      TF_VAR_tenant_id: $(tenant-id)
 stages:
   - stage: terraform
     jobs:
@@ -10,11 +14,6 @@ stages:
           vmImage: ubuntu-latest
 
         # ✅ Put env here so all steps inherit
-        env:
-          TF_VAR_subscription_id: $(subscription-id)
-          TF_VAR_client_id: $(client-id)
-          TF_VAR_client_secret: $(client-secret)
-          TF_VAR_tenant_id: $(tenant-id)
 
         steps:
           - script: |
