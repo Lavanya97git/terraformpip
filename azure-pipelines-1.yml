@@ -1,6 +1,6 @@
 name: keyvault testing
-variables:
-  - group: keyvaultterra
+# variables:
+#   - group: keyvaultterra
 stages:
   - stage: terraform
     jobs:
